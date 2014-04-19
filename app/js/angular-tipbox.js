@@ -1,30 +1,57 @@
 (function(window, angular, undefined) {
 	angular.module('tipbox', []).
 		directive('cTipbox', function() {
-			var boxTemplater = '<span style="display:block;width:30px;height:16px;font-size:30px;overflow:hidden;position:relative;margin-left:10px;margin-top:-15px;color:black">&#9670;</span> \
-			                    <span style="display:block;width:30px;height:16px;font-size:30px;overflow:hidden;position:relative;margin-left:10px;margin-top:-14px;color:white">&#9670;</span> \
-			                    <div ng-transclude></div>';
+			var boxTemplater = '<div style="position:relative"><tipbox><symbol1>&#9670;</symbol1><symbol2>&#9670;</symbol2></tipbox></div>';
 			return {
-				restrict: 'E',
+				restrict: 'AE',
 				transclude: true,
 				template: boxTemplater,
-				link: function(scope, element, attrs) {
-					console.log(element)
-					element.css({
-						position: 'absolute',
-						display: 'block',
-						width: '200px',
-						height: '200px',
-						top: '20px',
-						left: '200px',
-						border: '1px solid black',
-						'border-radius': '10px',
-						'-moz-border-radius':'25px',
-						'box-shadow': '2px 2px 3px #aaaaaa',
-						'-moz-box-shadow': '2px 2px 3px #aaaaaa'
+				compile: function(tElement, tAttrs, transclude) {
+					var height = tElement.css('height').replace(/[\d]+/, function(hi) {
+						return parseInt(hi) + 15;
 					});
+					var width = tElement.css('width').replace(/[\d]+/, function(wi) {
+						return parseInt(wi)/3;
+					});
+					tElement.append(boxTemplater);
+					return function(scope, iElement, iAttrs) {
+						iElement.find('tipbox').css({
+							position: 'absolute',
+							display: 'block',
+							width: '200px',
+							height: '200px',
+							top: height,
+							left: width,
+							border: '1px solid black',
+							'border-radius': '10px',
+							'-moz-border-radius':'25px',
+							'box-shadow': '2px 2px 3px #aaaaaa',
+							'-moz-box-shadow': '2px 2px 3px #aaaaaa'
+						});
 
-					//element.find('symbol1')
+						iElement.find('symbol1').css({
+							display: 'block',
+							width: '30px',
+							height: '16px',
+							'font-size': '29px',
+							overflow: 'hidden',
+							position: 'relative',
+							'margin-left': '25%',
+							'margin-top': '-15px',
+							color: 'black'
+						});
+						iElement.find('symbol2').css({
+							display: 'block',
+							width: '30px',
+							height: '16px',
+							'font-size': '29px',
+							overflow: 'hidden',
+							position: 'relative',
+							'margin-left': '25%',
+							'margin-top': '-14px',
+							color: 'white'
+						});
+					};
 				}
 			};
 		}).
