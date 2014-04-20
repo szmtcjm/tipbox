@@ -1,17 +1,18 @@
 (function(window, angular, undefined) {
 	angular.module('tipbox', []).
-	directive('cTipbox', function() {
+	directive('cTipbox', ['offset', function(offset) {
 		var boxTemplater = '<div style="position:relative;"></div><tipbox><symbol1>&#9670;</symbol1><symbol2>&#9670;</symbol2><div ng-transclude></div></tipbox>';
 		return {
 			restrict: 'AE',
 			transclude: true,
 			template: boxTemplater,
 			link: function(scope, iElement, iAttrs) {
+				var o = offset(iElement[0]);
 				var height = iElement.parent().css('height').replace(/[\d]+/, function(hi) {
-					return parseInt(hi) + 15;
+					return o.top + parseInt(hi) + 15;
 				});
 				var width = iElement.parent().css('width').replace(/[\d]+/, function(wi) {
-					return parseInt(wi) / 3;
+					return o.left + parseInt(wi) / 3;
 				});
 				iElement.find('tipbox').css({
 					position: 'absolute',
@@ -51,10 +52,23 @@
 				});
 			}
 		};
-	}).
-	factory('option', [
-		function() {
+	}]).
+	factory('offset', [
 
+		function() {
+			return function(element) {
+				var t = element.offsetTop;
+				var l = element.offsetLeft;
+				while (element = element.offsetParent) {
+					t += element.offsetTop;
+					l += element.offsetLeft;
+				}
+
+				return {
+					left: l,
+					top: t
+				};
+			}
 		}
 	]);
 })(window, window.angular);
