@@ -7,13 +7,13 @@
 			transclude: true,
 			template: boxTemplater,
 			link: function(scope, iElement, iAttrs) {
-				var height = tElement.css('height').replace(/[\d]+/, function(hi) {
+				var height = iElement.css('height').replace(/[\d]+/, function(hi) {
 					return parseInt(hi) + 15;
 				});
-				var width = tElement.css('width').replace(/[\d]+/, function(wi) {
+				var width = iElement.css('width').replace(/[\d]+/, function(wi) {
 					return parseInt(wi) / 3;
 				});
-				tElement.append(boxTemplater);
+				iElement.append(boxTemplater);
 				iElement.find('tipbox').css({
 					position: 'absolute',
 					display: 'block',
