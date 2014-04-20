@@ -1,19 +1,18 @@
 (function(window, angular, undefined) {
 	angular.module('tipbox', []).
 	directive('cTipbox', function() {
-		var boxTemplater = '<div style="position:relative"><tipbox><symbol1>&#9670;</symbol1><symbol2>&#9670;</symbol2></tipbox></div>';
+		var boxTemplater = '<div style="position:relative;"></div><tipbox><symbol1>&#9670;</symbol1><symbol2>&#9670;</symbol2><div ng-transclude></div></tipbox>';
 		return {
 			restrict: 'AE',
 			transclude: true,
 			template: boxTemplater,
 			link: function(scope, iElement, iAttrs) {
-				var height = iElement.css('height').replace(/[\d]+/, function(hi) {
+				var height = iElement.parent().css('height').replace(/[\d]+/, function(hi) {
 					return parseInt(hi) + 15;
 				});
-				var width = iElement.css('width').replace(/[\d]+/, function(wi) {
+				var width = iElement.parent().css('width').replace(/[\d]+/, function(wi) {
 					return parseInt(wi) / 3;
 				});
-				iElement.append(boxTemplater);
 				iElement.find('tipbox').css({
 					position: 'absolute',
 					display: 'block',
